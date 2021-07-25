@@ -1,0 +1,21 @@
+<div class="card filters">
+
+  <div class="card-header">
+    <strong>Filters</strong>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Category:</label>
+
+        <select formControlName="category" class="form-control">
+          <option disabled>Select Category</option>
+          <option *ngFor="let category of categoryList">{{category}}</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary btn-block btn-sm" type="submit">Filter</button>
+    </form>
+  </div>
+</div>
