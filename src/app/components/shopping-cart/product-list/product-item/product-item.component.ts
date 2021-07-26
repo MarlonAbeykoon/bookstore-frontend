@@ -23,7 +23,7 @@ export class ProductItemComponent implements OnInit {
   handleAddToCart() {
     this.cartService.addProductToCart(this.productItem).subscribe(() => {
       this.msg.sendMsg(this.productItem)
-    })
+    });
   }
 
 }

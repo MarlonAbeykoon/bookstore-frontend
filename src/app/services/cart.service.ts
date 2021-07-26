@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CartItem } from '../models/cart-item';
-// import { cartUrl } from '../config/api';
+import { cartUrl } from '../config/api';
 import { cartItemUrl } from '../config/api';
 import { Product } from '../models/product';
 
@@ -12,8 +12,13 @@ import { Product } from '../models/product';
   providedIn: 'root'
 })
 export class CartService {
+  private cartId: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.getCurrentCart().subscribe((cart: string) => {
+      this.cartId = cart;
+    });
+  }
 
   getCartItems(): Observable<CartItem[]> {
     //TODO: Mapping the obtained result to our CartItem props. (pipe() and map())
@@ -42,7 +47,15 @@ export class CartService {
     );
   }
 
+  getCurrentCart(): Observable<any> {
+    return this.http.get(cartUrl).pipe(
+      map((result: any[]) => {
+        return result['hydra:member'][0]['@id'];
+      })
+    );
+  }
+
   addProductToCart(product: Product): Observable<any> {
-    return this.http.post(cartItemUrl,  {'book': product['@id'], 'cart': '/api/carts/1'} );
+    return this.http.post(cartItemUrl,  {book: product['@id'], cart: this.cartId});
   }
 }
